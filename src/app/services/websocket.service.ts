@@ -1,33 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
+import { Usuario } from '../classes/usuario';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebsocketService {
-  public socketStatus=false;
+  public socketStatus = false;
+  public usuario!: Usuario;
 
-  constructor(
-    private socket: Socket
-  ) {
+  constructor(private socket: Socket) {
+    this.cargarStorage();
     this.checkStatus();
   }
 
-  checkStatus(){
+  checkStatus() {
     this.socket.on('connect', () => {
-      console.log('conectado al servidor');
+      console.log('Conectado al Servidor');
       this.socketStatus = true;
-    })
+    });
 
     this.socket.on('disconnect', () => {
-      console.log('Desconectado del servidor');
+      console.log('Desconectado del Servidor');
       this.socketStatus = false;
-    })
+    });
   }
-
-
-  emit( evento: string, payload: any , callback?: Function){
-    console.log('emitiendo mensaje');
+  emit(evento: string, payload?: any, callback?: Function) {
+    console.log('Emitiendo ', evento);
     this.socket.emit(evento, payload, callback);
   }
 
@@ -35,5 +34,34 @@ export class WebsocketService {
     return this.socket.fromEvent(evento);
   }
 
-}
+  loginWS(nombre: string) {
+    //console.log('Configurando: ', nombre);
 
+    return new Promise<void>((resolve, reject) => {
+      this.emit('configurar-usuario', { nombre }, (resp: Response) => {
+        this.usuario = new Usuario(nombre);
+        this.guardarStorage();
+        resolve();
+        //console.log(resp);
+      });
+    });
+    // this.socket.emit('configurar-usuario', {nombre}, (resp: Response)=>
+    // {
+    //   console.log(resp);
+    // });
+  }
+
+  getUsuario() {
+    return this.usuario;
+  }
+  
+  guardarStorage() {
+    localStorage.setItem('usuario', JSON.stringify(this.usuario));
+  }
+
+  cargarStorage() {
+    if (localStorage.getItem('usuario')) {
+      this.usuario ;
+    }
+  }
+}

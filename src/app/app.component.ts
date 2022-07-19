@@ -7,8 +7,8 @@ import { WebsocketService } from './services/websocket.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent{
-
   title = 'basico';
   constructor(
-  public wsService: WebsocketService){}
+  public wsService: WebsocketService,
+  ) {}
 }
