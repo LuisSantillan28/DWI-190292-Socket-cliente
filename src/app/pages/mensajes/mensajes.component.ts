@@ -9,5 +9,9 @@ import { WebsocketService } from '../../services/websocket.service';
 export class MensajesComponent implements OnInit {
   constructor(public wsService: WebsocketService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(){}
+
+  salir(){
+    this.wsService.logoutWS();
+  }
 }
