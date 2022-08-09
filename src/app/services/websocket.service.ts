@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class WebsocketService {
   public socketStatus = false;
-  public usuario?: Usuario;
+  public usuario!: Usuario; 
   
 
   constructor(
@@ -56,15 +56,16 @@ export class WebsocketService {
     // });
   }
 
-  logoutWS(){
-    this.usuario =  null;
-    localStorage.removeItem('usuario');
-    const payload ={
-      nombre: 'sin-nombre'
+  logoutWS() {
+    //Algo falla 
+    this.usuario;
+    localStorage.removeItem('user');
+ 
+    const payload = {
+      nombre: 'Sin-nombre',
     };
-    this.emit('configurar.usuario', payload);
+    this.emit('configurar-usuario', payload, () => {});
     this.router.navigateByUrl('');
-
   }
 
   getUsuario() {
