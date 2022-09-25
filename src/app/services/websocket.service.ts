@@ -58,11 +58,11 @@ export class WebsocketService {
 
   logoutWS() {
     //Algo falla 
-    this.usuario;
-    localStorage.removeItem('user');
+    this.usuario!= null;
+    localStorage.removeItem('usuario');
  
     const payload = {
-      nombre: 'Sin-nombre',
+      nombre: 'sin-nombre',
     };
     this.emit('configurar-usuario', payload, () => {});
     this.router.navigateByUrl('');
